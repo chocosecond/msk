@@ -62,7 +62,7 @@ optdepends=(
   "${MINGW_PACKAGE_PREFIX}-mediainfo: For technical clip information"
   "${MINGW_PACKAGE_PREFIX}-opencv: For motion tracking"
 )
-source=("https://invent.kde.org/chocolateimage/kdenlive/-/archive/0bc318c60120611d6a124fa749e1671e74e4e838/kdenlive-0bc318c60120611d6a124fa749e1671e74e4e838.tar.gz")
+source=("https://invent.kde.org/chocolateimage/kdenlive/-/archive/cb5d8ffbc4c825bc13cfe018e49fe0fe999a9aaa.tar.gz")
 sha256sums=('SKIP')
 #options=("!strip" "debug")
 

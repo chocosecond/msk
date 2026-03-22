@@ -41,7 +41,7 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-cc"
              "${MINGW_PACKAGE_PREFIX}-swig"
              "${_plugins_deps[@]}")
 optdepends=("${_plugins_deps[@]}")
-source=(https://github.com/chocolateimage/mlt/archive/96ebde8bbba22359b6242b70e9167626ddcd584f.zip
+source=(https://github.com/chocolateimage/mlt/archive/8c9f5db4a8cdd3db5539b8d0814927a4133fe391.zip
         0001-cmake-fix-libs-install.patch
         0002-cmake-install-manpage.patch
         0003-cmake-fix-x86-detection.patch)
