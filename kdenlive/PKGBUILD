@@ -2,7 +2,7 @@
 _realname=kdenlive
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
-pkgver=0bc318c60120611d6a124fa749e1671e74e4e838
+pkgver=cb5d8ffbc4c825bc13cfe018e49fe0fe999a9aaa
 pkgrel=1
 pkgdesc="A non-linear video editor for Linux using the MLT video framework (mingw-w64)"
 arch=('any')
