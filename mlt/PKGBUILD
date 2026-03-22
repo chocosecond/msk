@@ -1,0 +1,101 @@
+# Maintainer: Artem Konoplin <konoplin@gmail.com>
+# Contributor: Ray Donnelly <mingwandroid@gmail.com>
+
+_realname=mlt
+pkgbase=mingw-w64-${_realname}
+pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
+pkgver=96ebde8bbba22359b6242b70e9167626ddcd584f
+pkgrel=3
+pkgdesc="An open source multimedia framework (mingw-w64)"
+arch=('any')
+mingw_arch=('mingw64' 'ucrt64' 'clang64' 'clangarm64')
+url="https://www.mltframework.org"
+msys2_repository_url='https://github.com/mltframework/mlt'
+license=('spdx:LGPL-2.1-or-later')
+_plugins_deps=("${MINGW_PACKAGE_PREFIX}-ffmpeg"
+               "${MINGW_PACKAGE_PREFIX}-fftw"
+               "${MINGW_PACKAGE_PREFIX}-frei0r-plugins"
+               "${MINGW_PACKAGE_PREFIX}-gdk-pixbuf2"
+               "${MINGW_PACKAGE_PREFIX}-libebur128"
+               "${MINGW_PACKAGE_PREFIX}-libsamplerate"
+               "${MINGW_PACKAGE_PREFIX}-libvorbis"
+               "${MINGW_PACKAGE_PREFIX}-pango"
+               "${MINGW_PACKAGE_PREFIX}-qt5-svg"
+               "${MINGW_PACKAGE_PREFIX}-qt6-5compat"
+               "${MINGW_PACKAGE_PREFIX}-qt6-svg"
+               "${MINGW_PACKAGE_PREFIX}-qt6-quick3d"
+               "${MINGW_PACKAGE_PREFIX}-rtaudio"
+               "${MINGW_PACKAGE_PREFIX}-rubberband"
+               "${MINGW_PACKAGE_PREFIX}-SDL"
+               "${MINGW_PACKAGE_PREFIX}-sox"
+               "${MINGW_PACKAGE_PREFIX}-vid.stab")
+depends=("${MINGW_PACKAGE_PREFIX}-dlfcn"
+         "${MINGW_PACKAGE_PREFIX}-cc-libs"
+         "${MINGW_PACKAGE_PREFIX}-libiconv"
+         "${MINGW_PACKAGE_PREFIX}-libwinpthread"
+         "${MINGW_PACKAGE_PREFIX}-SDL2")
+makedepends=("${MINGW_PACKAGE_PREFIX}-cc"
+             "${MINGW_PACKAGE_PREFIX}-cmake"
+             "${MINGW_PACKAGE_PREFIX}-ninja"
+             "${MINGW_PACKAGE_PREFIX}-python"
+             "${MINGW_PACKAGE_PREFIX}-swig"
+             "${_plugins_deps[@]}")
+optdepends=("${_plugins_deps[@]}")
+source=(https://github.com/chocolateimage/mlt/archive/96ebde8bbba22359b6242b70e9167626ddcd584f.zip
+        0001-cmake-fix-libs-install.patch
+        0002-cmake-install-manpage.patch
+        0003-cmake-fix-x86-detection.patch)
+sha256sums=('SKIP'
+'SKIP' 'SKIP' 'SKIP')
+
+apply_patch_with_msg() {
+  for _patch in "$@"
+  do
+    msg2 "Applying ${_patch}"
+    patch -Nbp1 -i "${srcdir}/${_patch}"
+  done
+}
+
+prepare() {
+  cd "${srcdir}/${_realname}-${pkgver}"
+  apply_patch_with_msg \
+    0001-cmake-fix-libs-install.patch \
+    0002-cmake-install-manpage.patch \
+    0003-cmake-fix-x86-detection.patch
+}
+
+build() {
+  mkdir -p "${srcdir}/build-${MSYSTEM}" && cd "${srcdir}/build-${MSYSTEM}"
+
+  declare -a extra_config
+  if check_option "debug" "n"; then
+    extra_config+=("-DCMAKE_BUILD_TYPE=Release")
+  else
+    extra_config+=("-DCMAKE_BUILD_TYPE=Debug")
+  fi
+
+   # XXX: avoid mingw-w64 pulling in winpthreads via time.h
+  export CFLAGS+=" -DIN_WINPTHREAD"
+
+  CFLAGS+=" -Wno-int-conversion" \
+  MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=" \
+    cmake \
+      -GNinja \
+      -DCMAKE_INSTALL_PREFIX="${MINGW_PREFIX}" \
+      "${extra_config[@]}" \
+      -DPython3_EXECUTABLE=${MINGW_PREFIX}/bin/python.exe \
+      -DWINDOWS_DEPLOY=OFF \
+      -DMOD_GLAXNIMATE_QT6=OFF \
+      -DSWIG_PYTHON=ON \
+      -DMOD_QT6=ON \
+      -DMOD_MOVIT=OFF \
+      "${srcdir}/${_realname}-${pkgver}"
+
+  cmake --build .
+}
+
+package() {
+  cd "${srcdir}/build-${MSYSTEM}"
+  DESTDIR="${pkgdir}" cmake --install .
+  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
+}
