@@ -4,7 +4,7 @@
 _realname=mlt
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
-pkgver=8c9f5db4a8cdd3db5539b8d0814927a4133fe391
+pkgver=99.9.experiment3d
 pkgrel=3
 pkgdesc="An open source multimedia framework (mingw-w64)"
 arch=('any')
@@ -33,15 +33,15 @@ depends=("${MINGW_PACKAGE_PREFIX}-dlfcn"
          "${MINGW_PACKAGE_PREFIX}-cc-libs"
          "${MINGW_PACKAGE_PREFIX}-libiconv"
          "${MINGW_PACKAGE_PREFIX}-libwinpthread"
-         "${MINGW_PACKAGE_PREFIX}-SDL2")
+         "${MINGW_PACKAGE_PREFIX}-SDL2"
+         "${_plugins_deps[@]}")
 makedepends=("${MINGW_PACKAGE_PREFIX}-cc"
              "${MINGW_PACKAGE_PREFIX}-cmake"
              "${MINGW_PACKAGE_PREFIX}-ninja"
              "${MINGW_PACKAGE_PREFIX}-python"
              "${MINGW_PACKAGE_PREFIX}-swig"
              "${_plugins_deps[@]}")
-optdepends=("${_plugins_deps[@]}")
-source=(https://github.com/chocolateimage/mlt/archive/8c9f5db4a8cdd3db5539b8d0814927a4133fe391.zip
+source=(https://github.com/chocolateimage/mlt/archive/experiment-3d.zip
         0001-cmake-fix-libs-install.patch
         0002-cmake-install-manpage.patch
         0003-cmake-fix-x86-detection.patch)
@@ -57,7 +57,7 @@ apply_patch_with_msg() {
 }
 
 prepare() {
-  cd "${srcdir}/${_realname}-${pkgver}"
+  cd "${srcdir}/${_realname}-experiment-3d"
   apply_patch_with_msg \
     0001-cmake-fix-libs-install.patch \
     0002-cmake-install-manpage.patch \
@@ -89,7 +89,7 @@ build() {
       -DSWIG_PYTHON=ON \
       -DMOD_QT6=ON \
       -DMOD_MOVIT=OFF \
-      "${srcdir}/${_realname}-${pkgver}"
+      "${srcdir}/${_realname}-experiment-3d"
 
   cmake --build .
 }
@@ -97,5 +97,5 @@ build() {
 package() {
   cd "${srcdir}/build-${MSYSTEM}"
   DESTDIR="${pkgdir}" cmake --install .
-  install -Dm644 "${srcdir}/${_realname}-${pkgver}/COPYING" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
+  install -Dm644 "${srcdir}/${_realname}-experiment-3d/COPYING" "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
 }
