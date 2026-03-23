@@ -59,10 +59,10 @@ depends=(
   "${MINGW_PACKAGE_PREFIX}-qt6-imageformats"
   "${MINGW_PACKAGE_PREFIX}-breeze"
   "${MINGW_PACKAGE_PREFIX}-assimp"
+  "${MINGW_PACKAGE_PREFIX}-mediainfo: For technical clip information"
+  "${MINGW_PACKAGE_PREFIX}-ffmpeg: For FFmpeg plugin"
 )
 optdepends=(
-  "${MINGW_PACKAGE_PREFIX}-ffmpeg: For FFmpeg plugin"
-  "${MINGW_PACKAGE_PREFIX}-mediainfo: For technical clip information"
   "${MINGW_PACKAGE_PREFIX}-opencv: For motion tracking"
 )
 source=("https://invent.kde.org/chocolateimage/kdenlive/-/archive/experiment-3d.tar.gz")
