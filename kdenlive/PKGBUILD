@@ -59,8 +59,8 @@ depends=(
   "${MINGW_PACKAGE_PREFIX}-qt6-imageformats"
   "${MINGW_PACKAGE_PREFIX}-breeze"
   "${MINGW_PACKAGE_PREFIX}-assimp"
-  "${MINGW_PACKAGE_PREFIX}-mediainfo: For technical clip information"
-  "${MINGW_PACKAGE_PREFIX}-ffmpeg: For FFmpeg plugin"
+  "${MINGW_PACKAGE_PREFIX}-mediainfo"
+  "${MINGW_PACKAGE_PREFIX}-ffmpeg"
 )
 optdepends=(
   "${MINGW_PACKAGE_PREFIX}-opencv: For motion tracking"
